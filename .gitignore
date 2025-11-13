@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+env/
+
+# VSCode
+.vscode/
+
+# Streamlit cache
+.streamlit/
+
+# Ollama cache
+.ollama/
+
+# System files
+.DS_Store
+Thumbs.db

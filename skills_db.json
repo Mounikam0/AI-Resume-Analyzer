@@ -1,0 +1,44 @@
+{
+    "Data Analyst": {
+      "skills": [
+        "python",
+        "pandas",
+        "numpy",
+        "sql",
+        "data visualization",
+        "matplotlib",
+        "seaborn",
+        "excel",
+        "statistics",
+        "tableau",
+        "power bi"
+      ],
+      "resources": {
+        "python": ["https://www.freecodecamp.org/learn/python/"],
+        "pandas": ["https://pandas.pydata.org/docs/getting_started/index.html"],
+        "sql": ["https://www.w3schools.com/sql/"],
+        "tableau": ["https://www.tableau.com/learn/training"]
+      }
+    },
+    "Machine Learning Engineer": {
+      "skills": [
+        "python",
+        "numpy",
+        "pandas",
+        "scikit-learn",
+        "tensorflow",
+        "pytorch",
+        "machine learning",
+        "deep learning",
+        "nlp",
+        "model deployment",
+        "docker"
+      ],
+      "resources": {
+        "scikit-learn": ["https://scikit-learn.org/stable/tutorial/index.html"],
+        "tensorflow": ["https://www.tensorflow.org/tutorials"],
+        "pytorch": ["https://pytorch.org/tutorials/"]
+      }
+    }
+  }
+  
