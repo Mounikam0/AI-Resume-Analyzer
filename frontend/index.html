@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .tab-active { border-bottom: 3px solid #3B82F6; color: #3B82F6; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-blue-600 to-purple-600 p-2 rounded-lg">
+                        <i class="fas fa-sparkles text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">AI Resume Analyzer Pro</h1>
+                        <p class="text-sm text-gray-500">Powered by Google Gemini AI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex gap-8">
+                <button onclick="showTab('analyze')" id="analyzeTab" class="px-4 py-4 font-medium tab-active">
+                    <i class="fas fa-search mr-2"></i>Analyze Resume
+                </button>
+                <button onclick="showTab('builder')" id="builderTab" class="px-4 py-4 font-medium text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-hammer mr-2"></i>Resume Builder
+                </button>
+                <button onclick="showTab('matcher')" id="matcherTab" class="px-4 py-4 font-medium text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-bullseye mr-2"></i>Job Matcher
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- ANALYZE TAB -->
+        <div id="analyzeContent" class="tab-content">
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-8 border-2 border-dashed border-gray-300">
+                    <div class="text-center">
+                        <i class="fas fa-file-pdf text-blue-600 text-5xl mb-4"></i>
+                        <h2 class="text-2xl font-bold mb-2">Upload Resume</h2>
+                        <p class="text-gray-600 mb-6">Get instant AI analysis</p>
+                        
+                        <label class="cursor-pointer">
+                            <input type="file" id="resumeFile" accept=".pdf" class="hidden">
+                            <div class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 inline-block">
+                                <i class="fas fa-upload mr-2"></i>Choose PDF
+                            </div>
+                        </label>
+
+                        <div id="fileInfo" class="hidden mt-6 p-4 bg-green-50 rounded-lg">
+                            <p class="text-green-800 font-medium mb-4">
+                                <i class="fas fa-check-circle mr-2"></i><span id="fileName"></span>
+                            </p>
+                            <button id="analyzeBtn" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 w-full">
+                                <i class="fas fa-brain mr-2"></i>Analyze Resume
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xl font-bold">Features</h3>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <span class="text-3xl">🎯</span>
+                        <h4 class="font-bold mt-2">ATS Scoring</h4>
+                        <p class="text-sm text-gray-600">Pass applicant tracking systems</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <span class="text-3xl">🤖</span>
+                        <h4 class="font-bold mt-2">AI Analysis</h4>
+                        <p class="text-sm text-gray-600">Powered by Gemini 2.5</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4">
+                        <span class="text-3xl">💡</span>
+                        <h4 class="font-bold mt-2">Smart Tips</h4>
+                        <p class="text-sm text-gray-600">Personalized improvements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultsSection" class="hidden">
+                <h2 class="text-2xl font-bold text-center mb-6">Analysis Results</h2>
+                <div id="scoreCards" class="grid md:grid-cols-4 gap-4 mb-6"></div>
+                <div id="detailedAnalysis" class="space-y-6"></div>
+                <div class="flex gap-4 justify-center mt-8">
+                    <button id="newAnalysisBtn" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Analyze Another
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- BUILDER TAB -->
+        <div id="builderContent" class="tab-content hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6">Build Your Professional Resume</h2>
+                
+                <form id="resumeForm" class="space-y-6">
+                    <!-- Personal Info -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-bold mb-4">Personal Information</h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <input type="text" placeholder="Full Name" class="w-full p-3 border rounded-lg" required>
+                            <input type="email" placeholder="Email" class="w-full p-3 border rounded-lg" required>
+                            <input type="tel" placeholder="Phone" class="w-full p-3 border rounded-lg" required>
+                            <input type="text" placeholder="Location" class="w-full p-3 border rounded-lg">
+                        </div>
+                    </div>
+
+                    <!-- Professional Summary -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-bold mb-4">Professional Summary</h3>
+                        <textarea placeholder="Write a compelling professional summary..." class="w-full p-3 border rounded-lg" rows="4"></textarea>
+                        <button type="button" class="mt-2 text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-wand-magic-sparkles mr-2"></i>AI Generate
+                        </button>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-bold mb-4">Work Experience</h3>
+                        <div id="experienceContainer">
+                            <div class="experience-item bg-gray-50 p-4 rounded-lg mb-4">
+                                <input type="text" placeholder="Job Title" class="w-full p-2 border rounded mb-2">
+                                <input type="text" placeholder="Company" class="w-full p-2 border rounded mb-2">
+                                <div class="grid md:grid-cols-2 gap-2 mb-2">
+                                    <input type="text" placeholder="Start Date" class="p-2 border rounded">
+                                    <input type="text" placeholder="End Date" class="p-2 border rounded">
+                                </div>
+                                <textarea placeholder="Achievements (one per line)" class="w-full p-2 border rounded" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <button type="button" onclick="addExperience()" class="text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-plus-circle mr-2"></i>Add Experience
+                        </button>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-bold mb-4">Education</h3>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <input type="text" placeholder="Degree" class="w-full p-2 border rounded mb-2">
+                            <input type="text" placeholder="School/University" class="w-full p-2 border rounded mb-2">
+                            <input type="text" placeholder="Year" class="w-full p-2 border rounded">
+                        </div>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="border-b pb-6">
+                        <h3 class="text-xl font-bold mb-4">Skills</h3>
+                        <input type="text" placeholder="Add skills (comma separated)" class="w-full p-3 border rounded-lg">
+                        <div id="skillsDisplay" class="mt-4 flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Template Selection -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Choose Template</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="border-2 border-blue-600 rounded-lg p-4 cursor-pointer hover:shadow-lg">
+                                <div class="h-32 bg-gradient-to-br from-blue-100 to-blue-200 rounded mb-2"></div>
+                                <p class="font-bold text-center">Professional</p>
+                            </div>
+                            <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-600 hover:shadow-lg">
+                                <div class="h-32 bg-gradient-to-br from-purple-100 to-purple-200 rounded mb-2"></div>
+                                <p class="font-bold text-center">Modern</p>
+                            </div>
+                            <div class="border rounded-lg p-4 cursor-pointer hover:border-blue-600 hover:shadow-lg">
+                                <div class="h-32 bg-gradient-to-br from-green-100 to-green-200 rounded mb-2"></div>
+                                <p class="font-bold text-center">Creative</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 text-lg font-bold">
+                        <i class="fas fa-download mr-2"></i>Generate Resume PDF
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- MATCHER TAB -->
+        <div id="matcherContent" class="tab-content hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6">Match Resume to Job</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block font-bold mb-2">Upload Your Resume</label>
+                        <label class="cursor-pointer">
+                            <input type="file" id="matchResumeFile" accept=".pdf" class="hidden">
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-500">
+                                <i class="fas fa-file-pdf text-blue-600 text-4xl mb-2"></i>
+                                <p class="text-gray-600">Click to upload PDF</p>
+                                <p id="matchFileName" class="text-sm text-green-600 mt-2 hidden"></p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold mb-2">Paste Job Description</label>
+                        <textarea id="jobDescription" placeholder="Paste the job description here..." class="w-full p-4 border rounded-lg" rows="10"></textarea>
+                    </div>
+                </div>
+
+                <button id="matchBtn" class="w-full py-4 bg-gradient-to-r from-green-600 to-blue-600 text-white rounded-lg hover:from-green-700 hover:to-blue-700 text-lg font-bold">
+                    <i class="fas fa-bullseye mr-2"></i>Analyze Job Match
+                </button>
+
+                <div id="matchResults" class="hidden mt-8">
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-8 mb-6">
+                        <div class="text-center">
+                            <p class="text-gray-600 mb-2">Overall Match Score</p>
+                            <p id="matchScoreDisplay" class="text-6xl font-bold text-blue-600">--</p>
+                            <p class="text-gray-600 mt-2">out of 100</p>
+                        </div>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6 mb-6">
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-lg font-bold text-green-600 mb-4">
+                                <i class="fas fa-check-circle mr-2"></i>Matched Skills
+                            </h3>
+                            <div id="matchedSkillsDisplay" class="space-y-2"></div>
+                        </div>
+
+                        <div class="bg-white rounded-lg shadow-lg p-6">
+                            <h3 class="text-lg font-bold text-red-600 mb-4">
+                                <i class="fas fa-times-circle mr-2"></i>Missing Skills
+                            </h3>
+                            <div id="missingSkillsDisplay" class="space-y-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>Recommendations
+                        </h3>
+                        <div id="recommendationsDisplay" class="space-y-3"></div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-4">
+                            <i class="fas fa-tasks mr-2 text-blue-600"></i>Action Items
+                        </h3>
+                        <div id="actionItemsDisplay" class="space-y-2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Processing...</h3>
+                <p class="text-gray-600">AI is analyzing your data</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="enhanced-app.js"></script>
+</body>
+</html>

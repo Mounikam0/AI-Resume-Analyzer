@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-white to-purple-50 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="bg-gradient-to-br from-blue-600 to-purple-600 p-2 rounded-lg">
+                        <i class="fas fa-sparkles text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">AI Resume Analyzer</h1>
+                        <p class="text-sm text-gray-500">Powered by Google Gemini AI</p>
+                    </div>
+                </div>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Sign In
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Upload Section -->
+        <div id="uploadSection" class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-xl shadow-2xl p-8 border-2 border-dashed border-gray-300">
+                <div class="text-center">
+                    <div class="mx-auto w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-file-pdf text-blue-600 text-4xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-2">Upload Your Resume</h2>
+                    <p class="text-gray-600 mb-8">Get instant AI-powered analysis in seconds</p>
+                    
+                    <label class="cursor-pointer inline-block">
+                        <input type="file" id="resumeFile" accept=".pdf" class="hidden">
+                        <div class="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105 text-lg font-semibold">
+                            <i class="fas fa-upload mr-2"></i>
+                            Choose PDF File
+                        </div>
+                    </label>
+
+                    <div id="fileInfo" class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <p class="text-green-800 font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-check-circle"></i>
+                            <span id="fileName"></span>
+                        </p>
+                        <button id="analyzeBtn" class="mt-4 px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-lg font-semibold">
+                            <i class="fas fa-brain mr-2"></i>
+                            Analyze with AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mt-12 grid md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow p-6 text-center">
+                    <div class="text-4xl mb-3">🎯</div>
+                    <h3 class="font-bold text-gray-900 mb-2">ATS Compatible</h3>
+                    <p class="text-sm text-gray-600">Pass applicant tracking systems</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 text-center">
+                    <div class="text-4xl mb-3">🤖</div>
+                    <h3 class="font-bold text-gray-900 mb-2">AI-Powered</h3>
+                    <p class="text-sm text-gray-600">Advanced Gemini AI analysis</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6 text-center">
+                    <div class="text-4xl mb-3">⚡</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Instant Results</h3>
+                    <p class="text-sm text-gray-600">Get feedback in seconds</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section (Hidden Initially) -->
+        <div id="resultsSection" class="hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-900">Analysis Complete!</h2>
+                <p class="text-gray-600 mt-2">Here's your detailed resume analysis</p>
+            </div>
+
+            <!-- Score Cards -->
+            <div id="scoreCards" class="grid md:grid-cols-4 gap-4 mb-8"></div>
+
+            <!-- Detailed Analysis -->
+            <div id="detailedAnalysis" class="space-y-6"></div>
+
+            <!-- Action Buttons -->
+            <div class="flex gap-4 justify-center mt-8">
+                <button id="downloadBtn" class="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all transform hover:scale-105">
+                    <i class="fas fa-download mr-2"></i>
+                    Download Report
+                </button>
+                <button id="newAnalysisBtn" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                    Analyze Another Resume
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Analyzing Your Resume</h3>
+                <p class="text-gray-600 mb-4">Our AI is processing your resume...</p>
+                <div class="space-y-2 text-left">
+                    <p class="text-sm text-gray-500"><i class="fas fa-check text-green-500 mr-2"></i>Extracting text</p>
+                    <p class="text-sm text-gray-500"><i class="fas fa-check text-green-500 mr-2"></i>Analyzing structure</p>
+                    <p class="text-sm text-gray-500"><i class="fas fa-spinner fa-spin text-blue-500 mr-2"></i>Calculating scores...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
